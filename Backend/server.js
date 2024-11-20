@@ -6,6 +6,7 @@ const express = require("express");
 const cors = require('cors');
 const app = express();
 const PORT = 5000;
+const AdminRoute = require('./Routes/AdminRoute')
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -14,6 +15,8 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin")
     next()
 })
+
+app.use('/admin', AdminRoute)
 
 app.use(cors({
     origin: ['http://localhost:5173'],
