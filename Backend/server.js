@@ -7,9 +7,11 @@ const cors = require('cors');
 const app = express();
 const PORT = 5000;
 const AdminRoute = require('./Routes/AdminRoute')
+const cookieParser = require('cookie-parser')
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cookieParser())
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin")

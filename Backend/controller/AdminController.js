@@ -26,7 +26,7 @@ const register = asyncHandler(async(req, res) => {
         }
 
         // create a new admin in the database
-        const admin = adminModel.create({fullname, email, password})
+        const admin = await adminModel.create({fullname, email, password})
 
         // Generate JWT token for new admin
         const token = generateToken(admin._id);
@@ -40,6 +40,7 @@ const register = asyncHandler(async(req, res) => {
         })
 
         // Send a success response with admin details and token
+        console.log({admin})
 
         if(admin) {
             const { _id, fullname, email, role } = admin;
@@ -49,10 +50,101 @@ const register = asyncHandler(async(req, res) => {
             throw new Error('Invalid Data')
         }
     } catch (error) {
-        console.log(error.message);
-        res.status(500).send('Server Error!')
+        console.log(error);
+        res.status(500).send('Internal Server Error!')
     }
 })
+
+// Admin Login
+
+const login =asyncHandler( async (req, res) => {
+    try {
+        const {email, password} = req.body;
+        let admin = await adminModel.findOne({email})
+
+        // Check if the admin exists
+        if(!admin) {
+            return res.status(404).json({message: 'Admin Not Found!'})
+        }
+
+        // Check password
+
+        const isMatch = await bcrypt.compare(password, admin.password);
+        if(!isMatch) {
+            return res.status(400).json({message: 'Invalid Credentials'})
+        }
+
+        const token = generateToken(admin._id);
+        res.cookie('token', token, {
+            path: '/',
+            httpOnly: true,
+            expires: new Date(Date.now() + 1000 * 86400),   //expires within 24hrs
+            sameSite: 'none',
+            secure: true
+        })
+
+        const {_id, fullname, role} = admin;
+        res.status(201).json({_id, fullname, email, role, token})
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error!')
+    }
+})
+
+const getAdmin = asyncHandler(async(req, res) => {
+    try {
+        const {adminId} = req.params
+        // Find an admin by id
+        const admin = await adminModel.findById(adminId);
+        // console.log(req.adminId)
+        if(admin) {
+            const {_id, fullname, email, role}  = admin
+            res.status(200).json({_id, fullname, email, role})
+        } else {
+            res.status(404).json({message: 'Admin Not Found!'})
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error!')
+    }
+})
+
+// Get details of all admins
+
+const getAdmins = asyncHandler(async(req, res) => {
+    try {
+        const admins = await adminModel.find().sort('-createdAt').select('-password');
+    if(!admins) {
+        return res.status(404).json({message: 'No admin found'})
+    }
+    res.status(200).json(admins);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error!')
+    }
+})
+
+const updateAdmin = asyncHandler(async(req, res) => {
+    const adminId = req.params.adminId;
+    const {role} = req.body;
+    try {
+        const admin = await adminModel.findById(adminId)
+        if(!admin) {
+            return res.status(404).json({message: 'admin not found'})
+        }
+        admin.role = role
+        await admin.save()
+        res.status(200).json(admin)
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error!')
+    }
+})
+
 module.exports = {
-    register
+    register,
+    login,
+    getAdmin,
+    getAdmins,
+    updateAdmin
 } 
