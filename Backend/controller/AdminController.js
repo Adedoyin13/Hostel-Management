@@ -113,6 +113,8 @@ const getAdmin = asyncHandler(async(req, res) => {
 
 const getAdmins = asyncHandler(async(req, res) => {
     try {
+        // const {adminId} = req.params
+        // console.log(req.params)
         const admins = await adminModel.find().sort('-createdAt').select('-password');
     if(!admins) {
         return res.status(404).json({message: 'No admin found'})
@@ -125,7 +127,7 @@ const getAdmins = asyncHandler(async(req, res) => {
 })
 
 const updateAdmin = asyncHandler(async(req, res) => {
-    const adminId = req.params.adminId;
+    const {adminId} = req.params;
     const {role} = req.body;
     try {
         const admin = await adminModel.findById(adminId)
@@ -141,10 +143,43 @@ const updateAdmin = asyncHandler(async(req, res) => {
     }
 })
 
+// Delete admin
+
+const deleteAdmin = asyncHandler(async(req, res) => {
+    try {
+        const {adminId} = req.params;
+        const admin = await adminModel.findById(adminId);
+        if(!admin) {
+            return res.status(404).json({message: 'admin not found'})
+        }
+        await admin.deleteOne()
+        res.status(200).json({message: 'Admin deleted successfully!'})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({errorMessage: error.message})
+    }
+})
+
+// Logout admin
+
+const adminLogout = asyncHandler(async(req, res) => {
+    res.cookie('token', '', {
+        path: '/',
+        httpOnly: true,
+        expires: new Date(0),  
+        sameSite: 'none',
+        secure: true
+    })
+    return res.status(200).json({message: 'Logout Successful'})
+})
+
 module.exports = {
     register,
     login,
     getAdmin,
     getAdmins,
-    updateAdmin
+    updateAdmin,
+    deleteAdmin,
+    adminLogout
 } 
+ 
