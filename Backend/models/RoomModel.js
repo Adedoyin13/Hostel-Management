@@ -22,7 +22,7 @@ const RoomSchema = new mongoose.Schema({
     },
     roomStatus: {
         type: String,
-        default: available
+        default: 'available'
     },
 }, {timestamps: true})
 

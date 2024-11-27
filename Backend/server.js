@@ -7,6 +7,8 @@ const cors = require('cors');
 const app = express();
 const PORT = 5000;
 const AdminRoute = require('./Routes/AdminRoute')
+const RoomRoute = require('./Routes/roomRoute')
+const StudentRoute = require('./Routes/studentRoute')
 const cookieParser = require('cookie-parser')
 
 app.use(express.json());
@@ -19,6 +21,8 @@ app.use((req, res, next) => {
 })
 
 app.use('/admin', AdminRoute)
+app.use('/room', RoomRoute)
+app.use('/student', StudentRoute)
 
 app.use(cors({
     origin: ['http://localhost:5173'],
