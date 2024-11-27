@@ -2,6 +2,32 @@ const asyncHandler = require('express-async-handler');
 const Student = require('../models/StudentModel');
 const Room = require('../models/RoomModel');
 
+const date = new Date();
+const formatDate = (input) => {
+  return input > 9 ? input : `0${input}`;
+}
+
+const formatHour = (input) => {
+  return input > 12 ? input - 12 : input;
+}
+
+const format = {
+  dd: formatDate(date.getDate()),
+  mm: formatHour(date.getMonth() + 1),
+  yyyy: formatDate(date.getFullYear()),
+
+  HH: formatDate((date.getHours())),
+  hh: formatDate(formatHour(date.getHours())),
+
+  MM: formatDate(date.getMinutes()),
+  SS: formatDate(date.getSeconds()),
+
+}
+
+const format24Hour = ({dd, mm, yyyy, HH, MM, SS}) => {
+  return `${mm}/${dd}/${yyyy} ${HH}:${MM}:${SS}`
+}
+
 const registerStudent = asyncHandler(async(req, res) => {
     try {
         const {email, name, age, nationality, g_Name, g_Email, gender, roomNumber} = req.body
@@ -146,19 +172,75 @@ const changeStudentRoom = asyncHandler(async(req, res) => {
     }
 })
 
+const updateCheckInStatus = asyncHandler(async(req, res) => {
+    try {
+        const {studentId, action, roomNumber} = req.body;
 
+    const student = await Student.findById(studentId);
 
-module.exports = {registerStudent, getAllStudents, getStudent, updateStudentProfile, changeStudentRoom}
+    if(!student) {
+        return res.status(404).json({message: 'Student not found'});
+    }
 
+    if(action === 'checkIn') {
+        student.checkedIn = true;
+        student.checkedInTime = format24Hour(format);
+    } else if(action === 'CheckOut') {
+        student.checkedIn = false;
+        student.checkedOutTime = format24Hour(format);
+    } else {
+        return res.send(400).json({message: 'Invalid action'});
+    }
+    
+    const room = await Room.findOne({roomNumber});
+    
+    if(!room) {
+        return res.send(404).json({message: 'Room not found'});
+    }
 
+    if(action === 'checkIn') {
+        room.roomOccupancy.push(studentId)
+        await room.save()
+        await student.save()
+        res.status(200).json({message: 'Student checked in'})
+    } else if (action === 'chechhOut') {
+        const filteredStudent = room.roomOccupancy.filter((student) => student !== studentId)
+        room.roomOccupany = filteredStudent;
+        await room.save()
+        await student.save()
+        res.status(200).json({message: 'Student checked out'})
+    }
+    
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: 'Internal server error'})
+    }
+})
 
+const deleteStudent = asyncHandler(async(req, res) => {
+    try {
+        const {studentId} = req.params
 
+        const student = await Student.findById(studentId);
 
+        if(!student) {
+            return res.status(404).json({message: 'Student not found'});
+        }
 
+        const studentRoom = await Room.findById(student.room);
 
+        if(studentRoom && student) {
+            studentRoom.roomOccupancy = studentRoom.roomOccupancy.filter((occupant) => occupant.toString() !== studentId)
+            await studentRoom.save()
+            await student.save()
+            res.status(200).json({message: 'Student deleted successfully!'})
+        } else {
+            res.status(400).json({message: 'Student room not found!'})
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: 'Internal server error'})
+    }
+})
 
-
-
-
-
-
+module.exports = {registerStudent, getAllStudents, getStudent, updateStudentProfile, changeStudentRoom, updateCheckInStatus, deleteStudent}
