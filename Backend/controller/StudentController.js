@@ -185,7 +185,7 @@ const updateCheckInStatus = asyncHandler(async(req, res) => {
     if(action === 'checkIn') {
         student.checkedIn = true;
         student.checkedInTime = format24Hour(format);
-    } else if(action === 'CheckOut') {
+    } else if(action === 'checkOut') {
         student.checkedIn = false;
         student.checkedOutTime = format24Hour(format);
     } else {
@@ -203,7 +203,7 @@ const updateCheckInStatus = asyncHandler(async(req, res) => {
         await room.save()
         await student.save()
         res.status(200).json({message: 'Student checked in'})
-    } else if (action === 'chechhOut') {
+    } else if (action === 'checkOut') {
         const filteredStudent = room.roomOccupancy.filter((student) => student !== studentId)
         room.roomOccupany = filteredStudent;
         await room.save()
