@@ -20,16 +20,17 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use('/admin', AdminRoute)
-app.use('/room', RoomRoute)
-app.use('/student', StudentRoute)
-
 app.use(cors({
     origin: ['http://localhost:5173'],
     credentials: true,
     optionsSuccessStatus: 200,
     methods: 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS'
 }))
+
+app.use('/admin', AdminRoute)
+app.use('/room', RoomRoute)
+app.use('/student', StudentRoute)
+
 
 app.get('/', (req, res) => console.log('Success'));
 

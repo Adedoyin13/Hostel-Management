@@ -9,20 +9,20 @@ const register = asyncHandler(async(req, res) => {
         if(!fullname || !email || !password) {
             res.status(400)
             throw new Error('All fields are required')
-        } else if (password.length < 8)  {
+        } else if (password.length < 6)  {
             res.status(400);
             throw new Error('Minimum of six characters');
         } else if (password.length > 12) {
             res.status(400);
-            throw new Error('Maximum of twenty characters');
+            throw new Error('Maximum of twelve characters');
         }
 
         // check if admin already exists
         
         const adminExists = await adminModel.findOne({ email })
         if(adminExists) {
-            res.status(400)
-            throw new Error('Email aleady exists');
+            // console.log(error)
+            return res.status(400).json({msg: 'Email aleady exists'});
         }
 
         // create a new admin in the database
@@ -40,7 +40,7 @@ const register = asyncHandler(async(req, res) => {
         })
 
         // Send a success response with admin details and token
-        console.log({admin})
+        // console.log({admin})
 
         if(admin) {
             const { _id, fullname, email, role } = admin;
@@ -50,8 +50,10 @@ const register = asyncHandler(async(req, res) => {
             throw new Error('Invalid Data')
         }
     } catch (error) {
-        console.log(error);
-        res.status(500).send('Internal Server Error!')
+        res.status(500);
+        throw new Error('Internal Server Error!')
+        // console.log(error);
+        // res.status(500).send('Internal Server Error!')
     }
 })
 
