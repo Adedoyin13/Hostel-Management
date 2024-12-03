@@ -12,7 +12,7 @@ const register = asyncHandler(async(req, res) => {
         } else if (password.length < 8)  {
             res.status(400);
             throw new Error('Minimum of six characters');
-        } else if (password.length > 20) {
+        } else if (password.length > 12) {
             res.status(400);
             throw new Error('Maximum of twenty characters');
         }
@@ -57,7 +57,7 @@ const register = asyncHandler(async(req, res) => {
 
 // Admin Login
 
-const login =asyncHandler( async (req, res) => {
+const login = asyncHandler( async (req, res) => {
     try {
         const {email, password} = req.body;
         let admin = await adminModel.findOne({email})
@@ -66,9 +66,7 @@ const login =asyncHandler( async (req, res) => {
         if(!admin) {
             return res.status(404).json({message: 'Admin Not Found!'})
         }
-
         // Check password
-
         const isMatch = await bcrypt.compare(password, admin.password);
         if(!isMatch) {
             return res.status(400).json({message: 'Invalid Credentials'})
