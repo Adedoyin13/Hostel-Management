@@ -31,6 +31,7 @@ const format24Hour = ({dd, mm, yyyy, HH, MM, SS}) => {
 const registerStudent = asyncHandler(async(req, res) => {
     try {
         const {email, name, age, nationality, g_Name, g_Email, gender, roomNumber} = req.body
+        // console.log(req.body)
         if (!email || !name || !age || !nationality || !g_Name || !g_Email || !gender || !roomNumber) {
             return res.status(400).json({message: 'Please fill in all required fields'})
         }

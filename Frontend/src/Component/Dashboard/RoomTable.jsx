@@ -8,7 +8,7 @@ const RoomTable = ({rooms, onAddRoom, onUpdateRoom, onDeleteRoom}) => {
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-const [selectedRoom, setSelectedRoom] = useState(null);
+    const [selectedRoom, setSelectedRoom] = useState(null);
 
 const handleEditClick = (room) => {
     setSelectedRoom(room);

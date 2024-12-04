@@ -84,8 +84,9 @@ const AdminReg = () => {
         
     } catch (error) {
         setIsSubmitting(false);
-        toast.error(error?.response?.data.msg)
+        toast.error(error?.response?.data?.msg)
         const message = error?.response?.data?.msg ? `${error.response.data.msg}` : 'Internal server error'
+        console.log(error)
         setFormValidMessage(message);
         setLoading(false);
        }

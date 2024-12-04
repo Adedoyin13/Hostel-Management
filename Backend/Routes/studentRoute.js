@@ -5,7 +5,7 @@ const { protectAdmin } = require('../middleware/authMiddleware');
 const { registerStudent, getAllStudents, getStudent, updateStudentProfile, changeStudentRoom, updateCheckInStatus, deleteStudent } = require('../controller/StudentController');
 
 router.post('/register-student', protectAdmin, registerStudent)
-router.get('/', protectAdmin, getAllStudents)
+router.get('/', getAllStudents)
 router.get('/:_id', protectAdmin, getStudent)
 router.patch('/:studentId', protectAdmin, updateStudentProfile)
 router.put('/change-room', protectAdmin, changeStudentRoom)

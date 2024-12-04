@@ -39,12 +39,7 @@ const EditStatusModal = ({room, onUpdateRoom, onClose}) => {
             </label>
 
             <div className='right'>
-                <input
-                id="status"
-                className='search'
-                value={newStatus}
-                onChange={handleStatusChange}
-                type="text" />
+                <input id="status" className='search' value={newStatus} onChange={handleStatusChange} type="text" />
             </div>
 
             <div className='button-group'>

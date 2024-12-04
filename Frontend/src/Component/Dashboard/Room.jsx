@@ -48,7 +48,7 @@ const Room = () => {
             )
         })
         setSearchResult(filteredRooms)
-    }, [roomData, search])
+    }, [roomData, search]);
 
     const handleAddRoom = (newRoomData) => {
         setRoomData((prevData) => [...prevData, newRoomData])
