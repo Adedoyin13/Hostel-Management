@@ -73,7 +73,7 @@ const handleAddRoomClose = () => {
                     <AddRoomModal onAddRoom={onAddRoom} onClose={handleAddRoomClose}/>
                 )
             }
-
+            
             {
                 isEditModalOpen && (
                     <EditStatusModal

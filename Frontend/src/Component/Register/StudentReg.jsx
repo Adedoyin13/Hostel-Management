@@ -51,14 +51,15 @@ const StudentReg = () => {
 
         if(response?.data) {
             setLoading(false)
-            setUser(response.data)
+            // setUser(response.data)
             setIsSubmitting(false)
-            setFormCompleted(true);
+            // setFormCompleted(true);
             toast.success('Student added successfully');
             navigate('/student-dash')
         }
         
     } catch (error) {
+        console.log(error);
         toast.error(error?.response?.data?.message)
         const message = error?.response?.data?.msg ? `${error.response.data.msg}` : 'Internal server error'
        } finally {

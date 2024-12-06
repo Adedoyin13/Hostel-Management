@@ -10,9 +10,4 @@ router.get('/:_id', protectAdmin, getRoom)
 router.patch('/update-room/:roomId', protectAdmin, updateRoom)
 router.delete('/:roomId', protectAdmin, deleteRoom)
 
-
-
 module.exports = router
-
-
-

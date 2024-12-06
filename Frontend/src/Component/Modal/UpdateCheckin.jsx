@@ -1,9 +1,12 @@
+import axios from 'axios';
 import React, { useState } from 'react'
+import { toast } from 'react-toastify';
 
-const UpdateCheckin = ({student, onClose}) => {
+const UpdateCheckin = ({student, onClose, currentRoomNumber}) => {
     const [action, setAction] = useState('');
     const [roomNumber, setRoomNumber] = useState('');
-    const [currentRoomNumber, setCurrentRooomNumber] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    // console.log(student)
 
     const handleRoomChange = (e) => {
         setRoomNumber(e.target.value)
@@ -13,8 +16,21 @@ const UpdateCheckin = ({student, onClose}) => {
         setAction(e.target.value)
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true)
+        try {
+            console.log({student})
+            const response = await axios.post('http://localhost:5000/student/check-in-status', {studentId: student?._id, action, roomNumber: student?.room?.roomNumber}, {withCredentials: true});
+            // console.log(response)
+            toast.success(response?.data?.message)
+            onClose()
+        } catch (error) {
+            console.error(error?.response?.data?.message)
+            toast.error(error?.response?.data?.message)
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
   return (
@@ -26,17 +42,17 @@ const UpdateCheckin = ({student, onClose}) => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Room Number</label>
-                    <input type="text" value={roomNumber} onChange={handleRoomChange} placeholder='Enter Room Number'/>
+                    <input className='input' type="number" value={currentRoomNumber || roomNumber} onChange={handleRoomChange}/>
                 </div>
                 <div>
                     <label>Action</label>
-                    <select value={action} onChange={handleActionChange}>
+                    <select value={action} onChange={handleActionChange} className='input'>
                         <option value="&nbsp;">Select an action</option>
                         <option value="checkIn" disabled={student.checkedIn}>Check In</option>
                         <option value="checkOut" disabled={!student.checkedIn}>Check Out</option>
                     </select>
                 </div>
-                <button type='submit'>Update Status</button>
+                <button type='submit'>{isSubmitting ? 'Updating Status' : 'Update Status'}</button>
                 <button type='button' onClick={onClose}>Close</button>
             </form>
         </div>

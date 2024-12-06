@@ -79,7 +79,7 @@ const registerStudent = asyncHandler(async(req, res) => {
 const getAllStudents = asyncHandler(async(req, res) => {
     // Finds all students so new students come first
     try {
-        const students = await Student.find().sort('-createdAt')
+        const students = await Student.find().populate('room').sort('-createdAt')
     if(!students) {
         return res.status(404).json({message: 'No student found'})
     }
@@ -107,10 +107,10 @@ const getStudent = asyncHandler(async(req, res) => {
 
 const updateStudentProfile = asyncHandler(async(req, res) => {
     try {
-        const studentId = req.params.studentId
+        const {_id} = req.params
         const {name, age, nationality, g_Name, g_Email} = req.body
     
-        const student = await Student.findById(studentId);
+        const student = await Student.findById(_id);
         if(!student) {
             return res.status(404).json({message: 'Student Not Found'})
         }
@@ -162,6 +162,7 @@ const changeStudentRoom = asyncHandler(async(req, res) => {
         if(newRoom.roomOccupancy.length >= newRoom.roomCapacity) {
             newRoom.roomStatus = 'Unavailable'
         }
+        console.log({student});
 
         await newRoom.save()
         await student.save()
@@ -190,13 +191,13 @@ const updateCheckInStatus = asyncHandler(async(req, res) => {
         student.checkedIn = false;
         student.checkedOutTime = format24Hour(format);
     } else {
-        return res.send(400).json({message: 'Invalid action'});
+        return res.status(400).json({message: 'Invalid action'});
     }
     
     const room = await Room.findOne({roomNumber});
     
     if(!room) {
-        return res.send(404).json({message: 'Room not found'});
+        return res.status(404).json({message: 'Room not found'});
     }
 
     if(action === 'checkIn') {
@@ -206,7 +207,7 @@ const updateCheckInStatus = asyncHandler(async(req, res) => {
         res.status(200).json({message: 'Student checked in'})
     } else if (action === 'checkOut') {
         const filteredStudent = room.roomOccupancy.filter((student) => student !== studentId)
-        room.roomOccupany = filteredStudent;
+        room.roomOccupancy = filteredStudent;
         await room.save()
         await student.save()
         res.status(200).json({message: 'Student checked out'})
@@ -233,7 +234,7 @@ const deleteStudent = asyncHandler(async(req, res) => {
         if(studentRoom && student) {
             studentRoom.roomOccupancy = studentRoom.roomOccupancy.filter((occupant) => occupant.toString() !== studentId)
             await studentRoom.save()
-            await student.save()
+            await student.deleteOne()
             res.status(200).json({message: 'Student deleted successfully!'})
         } else {
             res.status(400).json({message: 'Student room not found!'})

@@ -5,7 +5,7 @@ import { IoMenu, IoCloseOutline, IoNotificationsOutline } from 'react-icons/io5'
 import HeaderSideNav from './HeaderSideNav';
 
 const items = [
-    {title: "Dashboard", url: "/home-dash"},
+    // {title: "Dashboard", url: "/home-dash"},
     {title: "Students", url: "/student-dash"},
     {title: "Rooms", url: "/room"}
 ]
