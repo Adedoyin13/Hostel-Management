@@ -39,7 +39,7 @@ const UserTable = ({data, onDelete, onUpdateRole}) => {
                     <td className='__tableData __tableRole'><p>{admin.role}</p></td>
                     <td className='__tableData __tableAction'>
                         <button className='__prevEditButton' onClick={() => onEdit(admin)}>Edit</button>
-                        <button className="__prevDelButton" onClick={() => onDelete(admin._id)}><RiDeleteBin6Line/></button>
+                        <button className="__prevDelButton" title='Delete Admin' onClick={() => onDelete(admin._id)}><RiDeleteBin6Line/></button>
                     </td>
                 </tr>
                 ))}

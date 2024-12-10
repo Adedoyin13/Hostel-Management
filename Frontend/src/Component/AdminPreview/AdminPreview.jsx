@@ -83,7 +83,7 @@ const AdminPreview = () => {
             </div>
             <div className='__prevList'><UserTable data={filteredData} onDelete={handleDelete} onUpdateRole={handleUpdateRole}/></div>
             <div className='__inviteBtnCon'>
-                <Link to="/"><button className="__inviteBtn">Invite Admin</button></Link>  
+                <Link to="/"><button className="__inviteBtn">Add Admin</button></Link>  
             </div>
         </div>
     </>
