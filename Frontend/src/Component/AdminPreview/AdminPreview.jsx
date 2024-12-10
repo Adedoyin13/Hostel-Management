@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import './AdminPreview.css'
+import './Adminpreview.css'
 import UserTable from './UserTable';
 import { CiSearch } from "react-icons/ci";
 import axios from 'axios';
