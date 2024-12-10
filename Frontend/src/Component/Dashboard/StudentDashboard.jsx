@@ -26,7 +26,7 @@ const StudentDashboard = () => {
   const [selectedModal, setSelectedModal] = useState("");
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [currentRoomNumber, setCurrentRoomNumber] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // setIsLoading(true);
@@ -36,10 +36,10 @@ const StudentDashboard = () => {
             // console.log(response);
             const data = response.data;
             setFilteredData(data)
-            setIsLoading(false)
+            // setIsLoading(false)
             // console.log({data})
         } catch (error) {
-            setIsLoading(false)
+            // setIsLoading(false)
             console.log(error)
             toast.error('Failed to load student')
         } finally {

@@ -22,7 +22,7 @@ const register = asyncHandler(async(req, res) => {
         const adminExists = await adminModel.findOne({ email })
         if(adminExists) {
             // console.log(error)
-            return res.status(400).json({msg: 'Email aleady exists'});
+            return res.status(400).json({message: 'Email aleady exists'});
         }
 
         // create a new admin in the database
@@ -50,8 +50,8 @@ const register = asyncHandler(async(req, res) => {
             throw new Error('Invalid Data')
         }
     } catch (error) {
-        res.status(500);
-        throw new Error('Internal Server Error!')
+        console.log(error);
+        res.status(500).json({ message: 'Internal Server Error!'})
         // console.log(error);
         // res.status(500).send('Internal Server Error!')
     }
@@ -87,7 +87,7 @@ const login = asyncHandler( async (req, res) => {
         res.status(201).json({_id, fullname, email, role, token})
     } catch (error) {
         console.log(error);
-        res.status(500).send('Internal Server Error!')
+        res.status(500).json({ message: 'Internal Server Error!'})
     }
 })
 
@@ -105,7 +105,7 @@ const getAdmin = asyncHandler(async(req, res) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).send('Internal Server Error!')
+        res.status(500).json({ message: 'Internal Server Error!' })
     }
 })
 
@@ -122,7 +122,7 @@ const getAdmins = asyncHandler(async(req, res) => {
     res.status(200).json(admins);
     } catch (error) {
         console.log(error);
-        res.status(500).send('Internal Server Error!')
+        res.status(500).json({ message: 'Internal Server Error!'})
     }
 })
 
@@ -139,7 +139,7 @@ const updateAdmin = asyncHandler(async(req, res) => {
         res.status(200).json(admin)
     } catch (error) {
         console.log(error);
-        res.status(500).send('Internal Server Error!')
+        res.status(500).json({ message: 'Internal Server Error!'})
     }
 })
 
@@ -156,7 +156,7 @@ const deleteAdmin = asyncHandler(async(req, res) => {
         res.status(200).json({message: 'Admin deleted successfully!'})
     } catch (error) {
         console.log(error);
-        res.status(500).json({errorMessage: error.message})
+        res.status(500).json({ message: 'Internal Server Error!'})
     }
 })
 

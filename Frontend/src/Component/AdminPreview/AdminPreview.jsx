@@ -1,48 +1,77 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './AdminPreview.css'
 import UserTable from './UserTable';
 import { CiSearch } from "react-icons/ci";
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import {ClipLoader} from 'react-spinners';
 import { Link } from 'react-router-dom';
 
-const userData = [
-    { id: 1, name: 'Muby', email: 'muby@gmail.com', role: 'Admin'},
-    { id: 2, name: 'Teddy', email: 'teddy@gmail.com', role: 'User'},
-    { id: 3, name: 'OG', email: 'og@gmail.com', role: 'Member'},
-    { id: 4, name: 'Chapo', email: 'chapo@gmail.com', role: 'Admin'},
-    { id: 5, name: 'Opera', email: 'opera@gmail.com', role: 'User'},
-    { id: 6, name: 'Rodiyat', email: 'rodiyat@gmail.com', role: 'Member'},
-];
+const override = {
+    display: 'block',
+    margin: '100px auto',
+}
 
 const AdminPreview = () => {
     const [search, setSearch] = useState('');
-    const [users, setUsers] = useState(userData);
-    const [filteredData, setFilteredData] = useState(userData);
+    const [admins, setAdmins] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
+    const [isLoading, setIsLoading ] = useState(true)
+
+    useEffect(() => {
+        const fetchAdmin = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/admin', {withCredentials: true})
+                const data = response.data
+                setFilteredData(data)
+                setAdmins(data)
+                console.log(data)
+            } catch (error) {
+                console.log(error)
+                toast.error(error?.response?.data?.message)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+        fetchAdmin()
+    }, [])
     
     const handleSearchChange = (e) => {
         const term = e.target.value.toLowerCase();
         setSearch(term)
-        const filtered = users.filter((user) => 
-            user.name.toLowerCase().includes(term) || user.email.toLowerCase().includes(term) || user.role.toLowerCase().includes(term) 
+        const filtered = admins.filter((admin) => 
+            admin?.fullname?.toLowerCase().includes(term) || admin?.email?.toLowerCase().includes(term) || admin?.role?.toLowerCase().includes(term) 
         )
         setFilteredData(filtered)
     }
 
-    const handleDelete = (userId) => {
-        const filteredData = users.filter((user) => user.id !== userId)
-        setUsers(filteredData);
-        const updatedFilterData = filteredData.filter((user) => user.id !== userId);
-        setFilteredData(updatedFilterData)
+    const handleDelete = async (adminId) => {
+        try {
+            const response = await axios.delete(`http://localhost:5000/admin/${adminId}`, {withCredentials: true})
+            const updatedFilterData = filteredData.filter((admin) => admin._id !== adminId);
+            setFilteredData(updatedFilterData);
+            toast.success(response?.data?.message)
+        } catch (error) {
+            console.log(error)
+            toast.error(error?.response?.data?.message)
+        }
     }
 
-    const handleUpdateRole = (userId, newRole) => {
-        const updatedRole = users.map((user) => user.id === userId ? {...user, role: newRole} : user)
-        setUsers(updatedRole);
-
-        const updatedFilteredRole = filteredData.map((user) => 
-            user.id === userId ? {...user, role: newRole} : user
-        )
-        setFilteredData(updatedFilteredRole);
+    const handleUpdateRole = async (adminId, newRole) => {
+        try {
+            const response = await axios.patch(`http://localhost:5000/admin/${adminId}`, {role: newRole}, {withCredentials: true})
+            const updatedFilteredRole = filteredData.map((admin) => 
+                admin._id === adminId ? {...admin, role: newRole} : admin
+            )
+            setFilteredData(updatedFilteredRole);
+            toast.success(response?.data?.message)
+        } catch (error) {
+            console.log(error)
+            toast.error(error?.response?.data?.message)
+        }
     }
+
+    if(isLoading) return <ClipLoader color='1a80e5' cssOverride={override} isLoading={isLoading}/>
 
   return (
     <>
@@ -54,7 +83,7 @@ const AdminPreview = () => {
             </div>
             <div className='__prevList'><UserTable data={filteredData} onDelete={handleDelete} onUpdateRole={handleUpdateRole}/></div>
             <div className='__inviteBtnCon'>
-                <button className='__inviteBtn'>Invite Admin</button>
+                <Link to="/"><button className="__inviteBtn">Invite Admin</button></Link>  
             </div>
         </div>
     </>

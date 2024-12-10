@@ -58,11 +58,7 @@ header {
 }
 
 .mobile-sidebar {
-  display: block;
-  position: fixed;
-  left: 0;
-  background-color: #fff;
-  z-index: 1;
+  display: none;
 }
 
 .--sidebar-close {
@@ -78,6 +74,14 @@ header {
 @media (max-width: 900px) {
   .sidebar-toggle-icon {
     display: block;
+  }
+
+  .mobile-sidebar {
+    display: block;
+    position: fixed;
+    left: 0;
+    background-color: #fff;
+    z-index: 1;
   }
 
   .logo a > span {

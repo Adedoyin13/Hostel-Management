@@ -4,19 +4,19 @@ import EditRoleModal from './EditRoleModal';
 
 const UserTable = ({data, onDelete, onUpdateRole}) => {
     const [modalOpen, setModalOpen] = useState(false);
-    const [selectUser, setSelectUser] = useState(null);
-    const openModal = (user) => {
+    const [selectAdmin, setSelectAdmin] = useState(null);
+    const openModal = (admin) => {
         setModalOpen(true);
-        setSelectUser(user);
+        setSelectAdmin(admin);
     }
     
     const closeModal = () => {
         setModalOpen(false);
-        setSelectUser(null);
+        setSelectAdmin(null);
     }
 
-    const onEdit = (user) => {
-        openModal(user)
+    const onEdit = (admin) => {
+        openModal(admin)
     }
 
   return (
@@ -32,21 +32,21 @@ const UserTable = ({data, onDelete, onUpdateRole}) => {
             </thead>
 
             <tbody id='__tableBody'>
-                {data.map((user, index) => (
+                {data.map((admin, index) => (
                 <tr key={index}>
-                    <td className='__tableData __tableName'>{user.name}</td>
-                    <td className='__tableData __tableEmail'>{user.email}</td>
-                    <td className='__tableData __tableRole'><p>{user.role}</p></td>
+                    <td className='__tableData __tableName'>{admin.fullname}</td>
+                    <td className='__tableData __tableEmail'>{admin.email}</td>
+                    <td className='__tableData __tableRole'><p>{admin.role}</p></td>
                     <td className='__tableData __tableAction'>
-                        <button className='__prevEditButton' onClick={() => onEdit(user)}>Edit</button>
-                        <button className="__prevDelButton" onClick={() => onDelete(user.id)}><RiDeleteBin6Line/></button>
+                        <button className='__prevEditButton' onClick={() => onEdit(admin)}>Edit</button>
+                        <button className="__prevDelButton" onClick={() => onDelete(admin._id)}><RiDeleteBin6Line/></button>
                     </td>
                 </tr>
                 ))}
 
             </tbody>
         </table>
-       {modalOpen && (<EditRoleModal user={selectUser} onUpdateRole={onUpdateRole} onClose={closeModal}/>)}
+       {modalOpen && (<EditRoleModal admin={selectAdmin} onUpdateRole={onUpdateRole} onClose={closeModal}/>)}
     </div>
   )
 }

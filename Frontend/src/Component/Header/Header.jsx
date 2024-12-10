@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './Header.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoMenu, IoCloseOutline, IoNotificationsOutline } from 'react-icons/io5';
 import HeaderSideNav from './HeaderSideNav';
+import { UserContext } from '../../context/UserContext';
 
 const items = [
     // {title: "Dashboard", url: "/home-dash"},
@@ -13,8 +14,11 @@ const items = [
 const Header = () => {
     const navigate = useNavigate();
     const [navToggle, setNavToggle] = useState(false);
+    const {setUser} = useContext(UserContext)
 
     const logoutUser = () => {
+        localStorage.removeItem('user');
+        setUser(null)
         navigate('/login')
     }
   return (
