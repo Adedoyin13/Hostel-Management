@@ -13,6 +13,8 @@ const override = {
     margin: '100px auto',
 }
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const Room = () => {
     const [roomData, setRoomData] = useState([]);
     const [search, setSearch] = useState('');
@@ -24,7 +26,7 @@ const Room = () => {
         setIsLoading(true);
         const fetchRooms = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/room/',{ withCredentials: true});
+                const response = await axios.get(`${BASE_URL}/room/`,{ withCredentials: true});
                 const data = response.data;
                 // console.log({data})
                 setRoomData(data)
@@ -54,7 +56,7 @@ const Room = () => {
 
     const handleAddRoom = async (newRoomData) => {
         try {
-            await axios.post(`http://localhost:5000/room/create-room`, newRoomData, {withCredentials: true});           
+            await axios.post(`${BASE_URL}/room/create-room`, newRoomData, {withCredentials: true});           
             setRoomData((prevData) => [...prevData, newRoomData])
             toast.success('Room Added Successfully')
         } catch (error) {
@@ -65,7 +67,7 @@ const Room = () => {
 
     const handleUpdateRoom = async (updatedRoomData) => {
         try {
-            await axios.patch(`http://localhost:5000/room/update-room/${updatedRoomData._id}`, {roomStatus: updatedRoomData.roomStatus}, {withCredentials: true});
+            await axios.patch(`${BASE_URL}/room/update-room/${updatedRoomData._id}`, {roomStatus: updatedRoomData.roomStatus}, {withCredentials: true});
             setRoomData((prevData) => prevData.map((room) => room._id === updatedRoomData._id ? updatedRoomData : room));
             toast.success('Room Updated Successfully')
         } catch (error) {
@@ -76,7 +78,7 @@ const Room = () => {
     const removeRoom = async (id) => {
         try {
             console.log({id})
-            await axios.delete(`http://localhost:5000/room/${id}`, {withCredentials: true});
+            await axios.delete(`${BASE_URL}/room/${id}`, {withCredentials: true});
             setRoomData((prevData) => prevData.filter((room) => room._id !== id))
             toast.success('Room Deleted Successfully')
         } catch (error) {

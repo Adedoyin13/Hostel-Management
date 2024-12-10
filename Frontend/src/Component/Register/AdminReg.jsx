@@ -9,6 +9,8 @@ import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 import PasswordInput from '../PasswordInput/PasswordInput';
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const override = {
     display: 'block',
     margin: '100px auto',
@@ -71,7 +73,7 @@ const AdminReg = () => {
         setIsSubmitting(true);
         setLoading(true);
 
-        const response = await axios.post('http://localhost:5000/admin/register', formData, {withCredentials: true});
+        const response = await axios.post(`${BASE_URL}/admin/register`, formData, {withCredentials: true});
 
         if(response?.data) {
             setLoading(false)

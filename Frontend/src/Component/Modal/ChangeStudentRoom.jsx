@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { toast } from "react-toastify";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const ChangeStudentRoom = ({student, onClose}) => {
     const [newRoomNum, setNewRoomNum] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -16,7 +18,7 @@ const ChangeStudentRoom = ({student, onClose}) => {
         setIsSubmitting(true)
         try {
             const studentId = student?._id;
-            const response = await axios.put('http://localhost:5000/student/change-room', {studentId: studentId, newRoomNum}, { withCredentials: true});
+            const response = await axios.put(`${BASE_URL}/student/change-room`, {studentId: studentId, newRoomNum}, { withCredentials: true});
             console.log(response);
             toast.success(response?.data?.message);
             onClose()

@@ -3,8 +3,9 @@ import './Register.css';
 import { useNavigate } from 'react-router-dom';
 import {ClipLoader} from 'react-spinners';
 import { toast } from 'react-toastify';
-// import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const override = {
     display: 'block',
@@ -47,7 +48,7 @@ const StudentReg = () => {
         setIsSubmitting(true);
         // setLoading(true);
 
-        const response = await axios.post('http://localhost:5000/student/register-student', formData, {withCredentials: true});
+        const response = await axios.post(`${BASE_URL}/student/register-student`, formData, {withCredentials: true});
 
         if(response?.data) {
             setLoading(false)

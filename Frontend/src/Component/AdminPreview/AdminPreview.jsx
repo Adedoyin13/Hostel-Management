@@ -12,6 +12,8 @@ const override = {
     margin: '100px auto',
 }
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const AdminPreview = () => {
     const [search, setSearch] = useState('');
     const [admins, setAdmins] = useState([]);
@@ -21,7 +23,7 @@ const AdminPreview = () => {
     useEffect(() => {
         const fetchAdmin = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/admin', {withCredentials: true})
+                const response = await axios.get(`${BASE_URL}/admin`, {withCredentials: true})
                 const data = response.data
                 setFilteredData(data)
                 setAdmins(data)
@@ -47,7 +49,7 @@ const AdminPreview = () => {
 
     const handleDelete = async (adminId) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/admin/${adminId}`, {withCredentials: true})
+            const response = await axios.delete(`${BASE_URL}/admin/${adminId}`, {withCredentials: true})
             const updatedFilterData = filteredData.filter((admin) => admin._id !== adminId);
             setFilteredData(updatedFilterData);
             toast.success(response?.data?.message)
@@ -59,7 +61,7 @@ const AdminPreview = () => {
 
     const handleUpdateRole = async (adminId, newRole) => {
         try {
-            const response = await axios.patch(`http://localhost:5000/admin/${adminId}`, {role: newRole}, {withCredentials: true})
+            const response = await axios.patch(`${BASE_URL}/admin/${adminId}`, {role: newRole}, {withCredentials: true})
             const updatedFilteredRole = filteredData.map((admin) => 
                 admin._id === adminId ? {...admin, role: newRole} : admin
             )

@@ -17,6 +17,8 @@ const formatName = (name) => {
     return firstName;
 }
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const HomeDash = () => {
     const {user} = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +31,7 @@ const HomeDash = () => {
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/student', { withCredentials: true});
+                const response = await axios.get(`${BASE_URL}/student`, { withCredentials: true});
                 const data = response.data;
                 console.log({data})
                 setStudents(data)
