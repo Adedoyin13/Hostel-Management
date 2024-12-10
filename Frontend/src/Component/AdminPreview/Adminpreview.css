@@ -56,8 +56,6 @@
 
 .__prevTable {
   width: 100%;
-  /*border-collapse: collapse;
-    */
   border: 1px solid #dbe0e5;
   border-radius: 10px;
   font-family: var(--font-family);

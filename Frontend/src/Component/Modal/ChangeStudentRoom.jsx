@@ -11,7 +11,6 @@ const ChangeStudentRoom = ({student, onClose}) => {
     const handleChange = (e) => {
         setNewRoomNum(e.target.value);
     }
-    // console.log(student);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

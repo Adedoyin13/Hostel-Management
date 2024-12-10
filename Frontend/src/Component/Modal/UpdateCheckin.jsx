@@ -8,7 +8,6 @@ const UpdateCheckin = ({student, onClose, currentRoomNumber}) => {
     const [action, setAction] = useState('');
     const [roomNumber, setRoomNumber] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false)
-    // console.log(student)
 
     const handleRoomChange = (e) => {
         setRoomNumber(e.target.value)

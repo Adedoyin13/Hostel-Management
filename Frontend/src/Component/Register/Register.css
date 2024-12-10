@@ -4,7 +4,6 @@
     max-width: 55rem;
     padding: 20px 40px;
     font-size: 25px;
-    /* height: 100%; */
   }
 
   .title {
@@ -40,10 +39,8 @@
 .form__ {
   position: relative;
   display: flex;
-  /* flex-direction: column; */
   align-items: center;
   justify-content: center;
-  /* padding: 2rem auto; */
 }
 
 .form-container {
@@ -55,7 +52,6 @@
   padding: 20px 30px;
   margin: 0 auto;
   height: 100%;
-  /* text-align: center; */
 }
 
 .form-container > p > a {
@@ -225,7 +221,6 @@ label {
   }
 
   .title {
-    /* padding-top: 2rem; */
     font-size: 20px;
     font-weight: 800;
   }
@@ -254,13 +249,11 @@ label {
 @media (min-width: 290px) and (max-width: 480px) {
   .form-container {
     width: 100%;
-    /* max-width: 30rem; */
     padding: 20px 10px;
     font-size: 16px;
   }
 
   .title {
-    /* padding-top: 2rem; */
     font-size: 16px;
     font-weight: 800;
   }

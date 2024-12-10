@@ -40,8 +40,6 @@ const register = asyncHandler(async(req, res) => {
         })
 
         // Send a success response with admin details and token
-        // console.log({admin})
-
         if(admin) {
             const { _id, fullname, email, role } = admin;
             res.status(201).json({_id, fullname, email, role})
@@ -52,8 +50,6 @@ const register = asyncHandler(async(req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Internal Server Error!'})
-        // console.log(error);
-        // res.status(500).send('Internal Server Error!')
     }
 })
 

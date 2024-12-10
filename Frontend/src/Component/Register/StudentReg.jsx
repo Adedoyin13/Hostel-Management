@@ -46,15 +46,12 @@ const StudentReg = () => {
         }
        
         setIsSubmitting(true);
-        // setLoading(true);
 
         const response = await axios.post(`${BASE_URL}/student/register-student`, formData, {withCredentials: true});
 
         if(response?.data) {
             setLoading(false)
-            // setUser(response.data)
             setIsSubmitting(false)
-            // setFormCompleted(true);
             toast.success('Student added successfully');
             navigate('/student-dash')
         }

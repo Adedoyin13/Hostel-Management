@@ -6,7 +6,6 @@ import HeaderSideNav from './HeaderSideNav';
 import { UserContext } from '../../context/UserContext';
 
 const items = [
-    // {title: "Dashboard", url: "/home-dash"},
     {title: "Students", url: "/student-dash"},
     {title: "Rooms", url: "/room"}
 ]

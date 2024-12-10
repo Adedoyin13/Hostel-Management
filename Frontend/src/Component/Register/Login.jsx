@@ -12,15 +12,9 @@ export const Login = () => {
     email: '',
     password: ''
   });
-  // const [formValidMessage, setFormValidMessage] = useState('');
   const {setUser} = useContext(UserContext)
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate()
-  
-  // const handleInputChange = (e) => {
-  //   const formInput = e.target.value;
-  //   setFormData(formInput)
-  // }
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
@@ -71,9 +65,6 @@ export const Login = () => {
 
           <button className='--btn' disabled={isSubmitting}>{isSubmitting ? 'Signing In...' : 'Sign In'}</button>
         </form>
-        {/* {formValidMessage && (
-          <p className='error-message'>{formValidMessage}</p>
-        )} */}
         <p className='account'>Don't have an account yet? <Link to='/'>Sign Up</Link></p>
       </div>
     </div>

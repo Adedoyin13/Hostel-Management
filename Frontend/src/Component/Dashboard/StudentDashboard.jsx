@@ -31,17 +31,12 @@ const StudentDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // setIsLoading(true);
     const fetchStudents = async () => {
         try {
             const response = await axios.get(`${BASE_URL}/student`, { withCredentials: true});
-            // console.log(response);
             const data = response.data;
             setFilteredData(data)
-            // setIsLoading(false)
-            // console.log({data})
         } catch (error) {
-            // setIsLoading(false)
             console.log(error)
             toast.error('Failed to load student')
         } finally {
@@ -55,7 +50,6 @@ const StudentDashboard = () => {
 
   const handleDelete = async (studentId) => {
     try {
-      // console.log(studentId);
       const response = await axios.delete(`${BASE_URL}/student/${studentId}`, {withCredentials: true});
       console.log(response);
       const updatedFilterData = filteredData.filter((student) => student._id !== studentId);

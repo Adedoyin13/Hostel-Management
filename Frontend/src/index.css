@@ -74,7 +74,6 @@ img {
   font-weight: var(--font-weight);
   line-height: 21px;
   letter-spacing: 0.21px;
-  /* width: 84px; */
   height: 40px;
 }
 
@@ -89,7 +88,6 @@ img {
   font-weight: var(--font-weight);
   line-height: 21px;
   letter-spacing: 0.21px;
-  /* width: 84px; */
   height: 40px;
 }
 
@@ -101,7 +99,6 @@ img {
   padding: 10px;
 }
 
-/* Flex  */
 .--flex-center {
   display: flex;
   justify-content: center;
@@ -188,10 +185,6 @@ img {
   display: flex;
   justify-content: center;
 }
-
-/* .relative {
-  position: relative;
-} */
 
 @media (min-width: 768px) and (max-width: 991px) {
   .container {

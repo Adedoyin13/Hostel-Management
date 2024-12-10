@@ -13,12 +13,9 @@ const UpdateStudentProfile = ({student, onClose, updateFilteredData}) => {
     g_Email: student.guardian.guardianEmail,
     _id: student._id
 });
-// console.log({formData});
 
   const handleChange = (e) => {
     const {name, value} = e.target
-    // console.log({name, value});
-
     setFormData(prev=> ({...prev, [name]: value}))
   }
 
@@ -26,7 +23,6 @@ const UpdateStudentProfile = ({student, onClose, updateFilteredData}) => {
     e.preventDefault();
     try {
       const response = await axios.patch(`${BASE_URL}/student/${student._id}`, formData, {withCredentials: true});
-      // console.log(response.data);
       if(response?.data) {
         updateFilteredData((prevData) => [response.data, ...prevData])
         toast.success('Update Successful')

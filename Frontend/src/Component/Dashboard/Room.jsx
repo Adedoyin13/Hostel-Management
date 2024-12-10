@@ -28,7 +28,6 @@ const Room = () => {
             try {
                 const response = await axios.get(`${BASE_URL}/room/`,{ withCredentials: true});
                 const data = response.data;
-                // console.log({data})
                 setRoomData(data)
             } catch (error) {
                 console.log(error)
