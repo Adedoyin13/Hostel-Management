@@ -32,6 +32,8 @@ export const Login = () => {
         return;
       }
       setIsSubmitting(true);
+
+      console.log({formData});
       
       const response = await axios.post(`${BASE_URL}/admin/login`, formData, {withCredentials: true});
 
@@ -41,7 +43,7 @@ export const Login = () => {
       navigate('/home-dash', {state: {user:response.data}})
 
     } catch (error) {
-      console.error(error)
+        console.error(error)
         toast.error(error?.response?.data?.message)
     } finally {
       setIsSubmitting(false)

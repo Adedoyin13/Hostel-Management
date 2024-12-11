@@ -5,23 +5,24 @@ const connectDB = require('./config/db');
 const express = require("express");
 const cors = require('cors');
 const app = express();
-const PORT = 5000;
 const AdminRoute = require('./Routes/AdminRoute')
 const RoomRoute = require('./Routes/roomRoute')
 const StudentRoute = require('./Routes/studentRoute')
 const cookieParser = require('cookie-parser')
+
+const PORT = 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser())
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin")
+    res.header("Access-Control-Allow-Origin", "*")
     next()
 })
 
 app.use(cors({
-    origin: [`${process.env.FRONTEND_URL || 'https://hostelmanagement-frontend-delta.vercel.app/'}`],
+    origin: [process.env.FRONTEND_URL, 'https://hostelmanagement-frontend-delta.vercel.app'],
     credentials: true,
     optionsSuccessStatus: 200,
     methods: 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS'
